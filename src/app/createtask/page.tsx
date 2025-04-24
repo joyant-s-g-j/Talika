@@ -7,10 +7,10 @@ const CreateTask = () => {
     <Box>
       <Navbar />
       <Box display="flex" minH="100vh" alignItems="center" justifyContent="center" >
-        <Fieldset.Root size="lg" maxW="md">
+        <Fieldset.Root size="lg" maxW={{base:"sm", lg: "md"}}>
           <Stack>
             <Fieldset.Legend 
-              display="flex" 
+              display="flex"
               fontSize="2xl" 
               justifyContent="center"
               fontWeight="bold"
@@ -38,7 +38,7 @@ const CreateTask = () => {
             <Field.Root>
               <Field.Label fontWeight="bold">Task Category</Field.Label>
               <NativeSelect.Root>
-                <NativeSelect.Field name='country'>
+                <NativeSelect.Field name='country' placeholder='Select category'>
                   <For each={["Work", "Personal", "Other"]}>
                     {(item) => (
                       <option key={item} value={item}>
