@@ -1,13 +1,44 @@
+'use client'
 import Navbar from '@/components/Navbar'
+import { addTask } from '@/store/slice'
 import { Box, Button, Field, Fieldset, For, Input, NativeSelect, Stack, Text, Textarea } from '@chakra-ui/react'
-import React from 'react'
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 
 const CreateTask = () => {
+  const [taskData, setTaskData] = useState({
+    title: '',
+    description: '',
+    category: '',
+    status: "Pending",
+  })
+  const dispatch = useDispatch()
+  const handleChange = (e: { target: { name: any; value: any } }) => {
+    const { name, value } = e.target
+    setTaskData(prev => ({...prev, [name]: value}))
+  }
+  const dataDispatch = () => {
+    console.log(taskData)
+    dispatch(addTask(taskData))
+    setTaskData({
+      title: '',
+      description: '',
+      category: '',
+      status: "Pending",
+    })
+  }
   return (
     <Box>
       <Navbar />
       <Box display="flex" minH="100vh" alignItems="center" justifyContent="center" >
-        <Fieldset.Root size="lg" maxW={{base:"sm", lg: "md"}}>
+        <Fieldset.Root 
+          border="2px solid #ccc" 
+          boxShadow="md" 
+          borderRadius="5px" 
+          padding="10px" 
+          size="lg" 
+          maxW={{base:"sm", lg: "md"}}
+        >
           <Stack>
             <Fieldset.Legend 
               display="flex"
@@ -22,7 +53,7 @@ const CreateTask = () => {
 
             <Field.Root>
               <Field.Label fontWeight="bold">Task Title</Field.Label>
-              <Input name='Title' placeholder='Write your task title' />
+              <Input name='title' placeholder='Write your task title' value={taskData.title} onChange={handleChange} />
             </Field.Root>
             
             <Field.Root>
@@ -31,14 +62,16 @@ const CreateTask = () => {
                 name='description' 
                 placeholder='Write your task description' 
                 h="80px" 
-                resize="none" 
+                resize="none"
+                value={taskData.description} 
+                onChange={handleChange}
               />
             </Field.Root>
 
             <Field.Root>
               <Field.Label fontWeight="bold">Task Category</Field.Label>
               <NativeSelect.Root>
-                <NativeSelect.Field name='country' placeholder='Select category'>
+                <NativeSelect.Field name='category' placeholder='Select category' value={taskData.category} onChange={handleChange}>
                   <For each={["Work", "Personal", "Other"]}>
                     {(item) => (
                       <option key={item} value={item}>
@@ -51,7 +84,7 @@ const CreateTask = () => {
             </Field.Root>
           </Fieldset.Content>
           
-          <Button type='submit' alignSelf="flex-center">
+          <Button type='submit' onClick={dataDispatch} alignSelf="flex-center">
             Submit
           </Button>
         </Fieldset.Root>

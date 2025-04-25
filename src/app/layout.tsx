@@ -1,8 +1,9 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 
-import { Provider } from '@/components/ui/provider'
 import { ThemeProvider } from 'next-themes'
+import { Providers } from '@/store/provider'
+import { Provider } from '@/components/ui/provider'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -22,11 +23,13 @@ export default function RootLayout({
         <link rel="icon" href="/talika.svg" />
       </head>
       <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme='light'>
-          <Provider>
-            {children}
-          </Provider>
-        </ThemeProvider>
+        <Provider defaultTheme='light'>
+          <ThemeProvider attribute="class" defaultTheme='light'>
+            <Providers>
+              {children}
+            </Providers>
+          </ThemeProvider>
+        </Provider>
       </body>
     </html>
   )
