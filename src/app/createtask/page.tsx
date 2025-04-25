@@ -19,7 +19,10 @@ const CreateTask = () => {
     setTaskData(prev => ({...prev, [name]: value}))
   }
   const dataDispatch = () => {
-    console.log(taskData)
+  if(!taskData.title || !taskData.description || !taskData.category) {
+    toaster.error({title: "Please fill in all the required fields."})
+    return
+  }
     dispatch(addTask(taskData))
     setTaskData({
       title: '',
@@ -73,7 +76,7 @@ const CreateTask = () => {
             <Field.Root>
               <Field.Label fontWeight="bold">Task Category</Field.Label>
               <NativeSelect.Root>
-                <NativeSelect.Field name='category' placeholder='Select category' value={taskData.category} onChange={handleChange}>
+                <NativeSelect.Field name='category' placeholder='Select category' value={taskData.category} onChange={handleChange} >
                   <For each={["Work", "Personal", "Other"]}>
                     {(item) => (
                       <option key={item} value={item}>

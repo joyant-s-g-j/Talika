@@ -24,9 +24,7 @@ const FilterSelect: React.FC<FilterSelectProps> = ({ label, placeholder, options
       width="320px"
       onValueChange={(details) => {
         const newValue = details.value[0];
-        if (newValue) {
-          onChange(newValue);
-        }
+        onChange(newValue);
       }}
       value={[selectedValue]}
     >

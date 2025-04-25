@@ -24,7 +24,7 @@ const MobileNavbar = () => {
                             <Drawer.Body display="flex" flexDirection="column" alignItems="start">
                                 <NavButton herf='/' icon={Home} label='Home' />
                                 <NavButton herf='/createtask' icon={Plus} label='Create Task' />
-                                <NavButton herf='/showtask' icon={ListTodo} label='Show Task' />
+                                <NavButton herf='/showtask' icon={ListTodo} label='See Task' />
                             </Drawer.Body>
                             <Drawer.CloseTrigger asChild>
                                 <CloseButton size="sm" />

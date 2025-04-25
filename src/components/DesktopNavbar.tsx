@@ -13,7 +13,7 @@ const DesktopNavbar = () => {
     >
         <NavButton display={{base: "none", lg: "flex"}} herf='/' icon={Home} label='Home' />
         <NavButton display={{base: "none", lg: "flex"}} herf='/createtask' icon={Plus} label='Create Task' />
-        <NavButton display={{base: "none", lg: "flex"}} herf='/showtask' icon={ListTodo} label='Show Task' /> 
+        <NavButton display={{base: "none", lg: "flex"}} herf='/showtask' icon={ListTodo} label='See Task' /> 
     </Flex>
   )
 }

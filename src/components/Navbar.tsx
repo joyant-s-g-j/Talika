@@ -1,5 +1,5 @@
 "use client"
-import { Box, Flex, Icon, Image, Text } from '@chakra-ui/react'
+import { Box, Flex, Icon, Text } from '@chakra-ui/react'
 import Link from 'next/link'
 import React from 'react'
 import DesktopNavbar from './DesktopNavbar'
