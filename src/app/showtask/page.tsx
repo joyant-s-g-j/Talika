@@ -2,11 +2,12 @@
 import Navbar from '@/components/Navbar'
 import FilterSelect from '@/components/reusable/FilterSelect'
 import NavButton from '@/components/reusable/NavbarButton'
-import { ActionBar, Box, Button, ButtonGroup, Checkbox, CloseButton, createListCollection, Dialog, EmptyState, Icon, Input, Portal, Select, Switch, Text, VStack } from '@chakra-ui/react'
+import { ActionBar, Badge, Box, Button, ButtonGroup, Checkbox, CloseButton, Dialog, EmptyState, Icon, Input, Portal, Switch, Text, VStack } from '@chakra-ui/react'
 import { ClipboardList, Home, Plus } from 'lucide-react'
 import React, { useState } from 'react'
 import { LuPencilLine, LuTrash2 } from 'react-icons/lu'
 import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux';
 
 interface Task {
   id: string;
@@ -53,7 +54,8 @@ const ShowTask = () => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('');
   const [search, setSearch] = useState('')
-  const [checked, setChecked] = useState(false)
+  const [checked, setChecked] = useState<Record<string, boolean>>({})
+  const dispatch = useDispatch();
 
   const filteredTasks = tasks.filter((task) => 
     (selectedCategory === '' || task.category === selectedCategory) &&
@@ -61,6 +63,22 @@ const ShowTask = () => {
     (task.title.toLowerCase().includes(search.toLowerCase()) ||
       task.description.toLowerCase().includes(search.toLowerCase()))
   )
+
+  const handleCheckboxChange = (taskId: string) => {
+    setChecked(prev => {
+      const newChecked = {...prev};
+      newChecked[taskId] = !newChecked[taskId]
+      return newChecked
+    })
+  }
+
+  const handleCloseActionBar = (taskId: string) => {
+    setChecked(prev => {
+      const newChecked = {...prev};
+      newChecked[taskId] = false
+      return newChecked
+    })
+  }
 
   return (
     <Box>
@@ -115,88 +133,88 @@ const ShowTask = () => {
           ) : (
               filteredTasks.length > 0 ? filteredTasks.map((item) => (
                 <Box key={item.id} p={4} borderBottom="1px solid #ccc" display="flex" gap={3} w={{base: "full", lg: "50%"}}>
-                    <Checkbox.Root 
-                      checked={checked}
-                      onCheckedChange={(e) => setChecked(!!e.checked)}
-                    >
-                      <Checkbox.HiddenInput />
-                      <Checkbox.Control />
-                    </Checkbox.Root>        
-                    <Box display="flex" justifyContent="space-between" flex="1">
-                      <Box display="flex" flexDirection="column" alignItems="start">
-                        <Text as="span" textTransform="capitalize" fontWeight="bold">{item.title}</Text>
-                        <Text as="span">{item.description.split(" ").slice(0, 5).join(" ")}...</Text>
-                      </Box>
-                      <Box display="flex" gap={4} alignItems="center">
-                        <Text 
-                          as="span" 
-                          backgroundColor={
-                            item.category === "Work" ? "blue.300"
-                            : item.category === "Personal" ? "purple.300"
-                            : "gray.400"
-                          } 
-                          p={1} 
-                          borderRadius="md"
-                          fontSize="sm"
-                        >
-                          {item.category}
-                        </Text>
-                        <Text as="span">{item.status}</Text>
-                        <Switch.Root colorPalette="green">
-                          <Switch.HiddenInput />
-                          <Switch.Control>
-                            <Switch.Thumb />
-                          </Switch.Control>
-                        </Switch.Root>
-                      </Box>
+                  <Checkbox.Root 
+                    checked={!!checked[item.id]}
+                    onChange={() => handleCheckboxChange(item.id)}
+                  >
+                    <Checkbox.HiddenInput />
+                    <Checkbox.Control />
+                  </Checkbox.Root>        
+                  <Box display="flex" justifyContent="space-between" flex="1">
+                    <Box display="flex" flexDirection="column" alignItems="start">
+                      <Text as="span" textTransform="capitalize" fontWeight="bold">{item.title}</Text>
+                      <Text as="span">{item.description.split(" ").slice(0, 5).join(" ")}...</Text>
                     </Box>
-                    <ActionBar.Root
-                      open={checked}
-                      onOpenChange={(e) => setChecked(e.open)}
-                      closeOnInteractOutside={false}
-                    >
-                      <Portal>
-                        <ActionBar.Positioner>
-                          <ActionBar.Content>
-                            {buttons.map(({title, icon, color}) => (
-                              <Dialog.Root key={title} placement="center" motionPreset="slide-in-bottom">
-                              <Dialog.Trigger>     
-                                <Button color={color} borderColor={color} variant="outline" size="sm">
-                                  {icon}
-                                  {title}
-                                </Button>
-                              </Dialog.Trigger>
-                              <Portal>
-                                <Dialog.Backdrop />
-                                <Dialog.Positioner>
-                                  <Dialog.Content>
-                                    <Dialog.Header>
-                                      <Dialog.Title>{title} Task</Dialog.Title>
-                                    </Dialog.Header>
-                                    <Dialog.Body>
-                                      <p>Are you delete you task?</p>
-                                    </Dialog.Body>
-                                    <Dialog.Footer>
-                                      <Dialog.ActionTrigger asChild>
-                                        <Button variant="outline">Cancel</Button>
-                                      </Dialog.ActionTrigger>
-                                      <Button backgroundColor="red">{title}</Button>
-                                    </Dialog.Footer>
-                                    <Dialog.CloseTrigger asChild>
-                                      <CloseButton size="sm" />
-                                    </Dialog.CloseTrigger>
-                                  </Dialog.Content>
-                                </Dialog.Positioner>
-                              </Portal>
-                            </Dialog.Root>
-                            ))}       
-                            <ActionBar.CloseTrigger asChild>
-                              <CloseButton size="sm" />
-                            </ActionBar.CloseTrigger>
-                          </ActionBar.Content>
-                        </ActionBar.Positioner>
-                      </Portal>
-                    </ActionBar.Root>
+                    <Box display="flex" gap={4} alignItems="center">
+                      <Text 
+                        as="span" 
+                        backgroundColor={
+                          item.category === "Work" ? "blue.300"
+                          : item.category === "Personal" ? "purple.300"
+                          : "gray.400"
+                        } 
+                        p={1} 
+                        borderRadius="md"
+                        fontSize="sm"
+                      >
+                        {item.category}
+                      </Text>
+                      <Badge color="orange.solid">{item.status}</Badge>
+                      <Switch.Root colorPalette="green">
+                        <Switch.HiddenInput />
+                        <Switch.Control>
+                          <Switch.Thumb />
+                        </Switch.Control>
+                      </Switch.Root>
+                    </Box>
+                  </Box>
+                  {
+                    checked[item.id] && (
+                      <ActionBar.Root open={checked[item.id]}>
+                        <Portal>
+                          <ActionBar.Positioner>
+                            <ActionBar.Content>
+                              {buttons.map(({title, icon, color}) => (
+                                <Dialog.Root key={title} placement="center" motionPreset="slide-in-bottom">
+                                <Dialog.Trigger>     
+                                  <Button color={color} borderColor={color} variant="outline" size="sm">
+                                    {icon}
+                                    {title}
+                                  </Button>
+                                </Dialog.Trigger>
+                                <Portal>
+                                  <Dialog.Backdrop />
+                                  <Dialog.Positioner>
+                                    <Dialog.Content>
+                                      <Dialog.Header>
+                                        <Dialog.Title>{title} Task</Dialog.Title>
+                                      </Dialog.Header>
+                                      <Dialog.Body>
+                                        <p>Are you delete you task?</p>
+                                      </Dialog.Body>
+                                      <Dialog.Footer>
+                                        <Dialog.ActionTrigger asChild>
+                                          <Button variant="outline">Cancel</Button>
+                                        </Dialog.ActionTrigger>
+                                        <Button backgroundColor="red">{title}</Button>
+                                      </Dialog.Footer>
+                                      <Dialog.CloseTrigger asChild>
+                                        <CloseButton size="sm" />
+                                      </Dialog.CloseTrigger>
+                                    </Dialog.Content>
+                                  </Dialog.Positioner>
+                                </Portal>
+                              </Dialog.Root>
+                              ))}       
+                              <ActionBar.CloseTrigger asChild>
+                                <CloseButton size="sm" onClick={() => handleCloseActionBar(item.id)} />
+                              </ActionBar.CloseTrigger>
+                            </ActionBar.Content>
+                          </ActionBar.Positioner>
+                        </Portal>
+                      </ActionBar.Root>
+                    )
+                  }         
                 </Box>
               )) : (
                 <EmptyState.Root>
@@ -212,7 +230,6 @@ const ShowTask = () => {
               )
           )
         }
-        
       </Box>
     </Box>
   );
