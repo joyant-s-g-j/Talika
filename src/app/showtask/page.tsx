@@ -1,8 +1,10 @@
 'use client'
 import Navbar from '@/components/Navbar'
+import EditableTaskFields from '@/components/reusable/EditableTaskFields'
 import FilterSelect from '@/components/reusable/FilterSelect'
 import NavButton from '@/components/reusable/NavbarButton'
-import { deleteTask } from '@/store/slice'
+import { toaster } from '@/components/ui/toaster'
+import { deleteTask, updateTask } from '@/store/slice'
 import { ActionBar, Badge, Box, Button, ButtonGroup, Checkbox, CloseButton, Dialog, EmptyState, Icon, Input, Portal, Switch, Text, VStack } from '@chakra-ui/react'
 import { ClipboardList, Home, Plus } from 'lucide-react'
 import React, { useState } from 'react'
@@ -56,6 +58,7 @@ const ShowTask = () => {
   const [selectedStatus, setSelectedStatus] = useState('');
   const [search, setSearch] = useState('')
   const [checked, setChecked] = useState<Record<string, boolean>>({})
+  const [editedTask, setEditedTask] = useState<Partial<Task>>({});
   const dispatch = useDispatch();
 
   const filteredTasks = tasks.filter((task) => 
@@ -83,6 +86,21 @@ const ShowTask = () => {
 
   const handleDeleteTask = (id: string) => {
     dispatch(deleteTask(id))
+    toaster.success({title: "Task deleted successfully"})
+  }
+
+  const handleEditTask = (id: string) => {
+    const originalTask = tasks.find((t) => t.id === id);
+    if (originalTask){
+      const updated = {
+        ...originalTask,
+        ...editedTask,
+      };
+    
+      dispatch(updateTask(updated));
+      setEditedTask({});
+      toaster.success({title: "Task updated successfully"})
+    }
   }
 
   return (
@@ -141,6 +159,8 @@ const ShowTask = () => {
                   <Checkbox.Root 
                     checked={!!checked[item.id]}
                     onChange={() => handleCheckboxChange(item.id)}
+                    variant="subtle"
+                    colorPalette="red"
                   >
                     <Checkbox.HiddenInput />
                     <Checkbox.Control />
@@ -194,14 +214,40 @@ const ShowTask = () => {
                                       <Dialog.Header>
                                         <Dialog.Title>{title} Task</Dialog.Title>
                                       </Dialog.Header>
-                                      <Dialog.Body>
-                                        <p>Are you {title} you task?</p>
+                                      <Dialog.Body>                                  
+                                        {title === "Edit" ?                                  
+                                          <EditableTaskFields
+                                            title={item.title}
+                                            description={item.description}
+                                            category={item.category}
+                                            onChange={(updated) =>
+                                              setEditedTask((prev) => ({
+                                                ...prev,
+                                                ...updated,
+                                                id: item.id,
+                                              }))
+                                            }                                                                                   
+                                          />                                         
+                                          :'Are you sure you want to delete your task?'
+                                        }
                                       </Dialog.Body>
                                       <Dialog.Footer>
                                         <Dialog.ActionTrigger asChild>
                                           <Button variant="outline">Cancel</Button>
                                         </Dialog.ActionTrigger>
-                                        <Button backgroundColor="red" onClick={() => title === 'Delete' && handleDeleteTask(item.id)}>{title}</Button>
+                                        <Button 
+                                          backgroundColor="red" 
+                                          onClick={() => {
+                                            if (title === 'Delete') {
+                                              handleDeleteTask(item.id);
+                                            } else if (title === 'Edit') {
+                                              handleEditTask(item.id);
+                                              handleCloseActionBar(item.id);
+                                            }
+                                          }}
+                                        >
+                                          {title}
+                                        </Button>
                                       </Dialog.Footer>
                                       <Dialog.CloseTrigger asChild>
                                         <CloseButton size="sm" />

@@ -22,9 +22,26 @@ const Slice = createSlice({
         deleteTask: (state, action) => {
             const id = action.payload
             state.tasks = state.tasks.filter(task => task.id !== id)
+        },
+        updateTask: (state, action) => {
+            const {id, title, description, category, status} = action.payload
+            const task = state.tasks.find(task => task.id === id)
+            if(task) {
+                task.title = title
+                task.description = description
+                task.category = category
+                task.status = status
+            }
+        },
+        toggleStatus: (state, action) => {
+            const id = action.payload
+            const task = state.tasks.find(task => task.id === id)
+            if(task) {
+                task.status = task.status === 'Completed' ? 'Pending' : 'Completed'
+            }
         }
     }
 })
 
-export const {addTask, deleteTask} = Slice.actions
+export const {addTask, deleteTask, updateTask, toggleStatus} = Slice.actions
 export default Slice.reducer
