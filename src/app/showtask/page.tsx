@@ -1,7 +1,9 @@
 'use client'
 import Navbar from '@/components/Navbar'
 import FilterSelect from '@/components/reusable/FilterSelect'
-import { Box, Checkbox, createListCollection, Portal, Select, Switch, Text } from '@chakra-ui/react'
+import NavButton from '@/components/reusable/NavbarButton'
+import { Box, ButtonGroup, Checkbox, createListCollection, EmptyState, Icon, Input, Portal, Select, Switch, Text, VStack } from '@chakra-ui/react'
+import { ClipboardList, Home, Plus } from 'lucide-react'
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 
@@ -22,7 +24,7 @@ interface State {
 const categoryOptions = [
   { label: 'Work', value: 'Work' },
   { label: 'Personal', value: 'Personal' },
-  { label: 'Others', value: 'Others' },
+  { label: 'Other', value: 'Other' },
 ];
 
 const statusOptions = [
@@ -34,19 +36,22 @@ const ShowTask = () => {
   const tasks = useSelector((state: State) => state.tasks.tasks);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('');
+  const [search, setSearch] = useState('')
 
   const filteredTasks = tasks.filter((task) => 
     (!selectedCategory || task.category === selectedCategory) &&
-    (!selectedStatus || task.status === selectedStatus)
+    (!selectedStatus || task.status === selectedStatus) &&
+    (task.title.toLowerCase().includes(search.toLowerCase()) ||
+      task.description.toLowerCase().includes(search.toLowerCase()))
   )
 
   return (
     <Box>
       <Navbar />
       <Box display="flex" minH="100vh" flexDirection="column" alignItems="center" mt={24} gap={4}>
-        <Text fontSize="2xl" fontWeight="bold">Show Task Section</Text>
+        <Text fontSize="2xl" fontWeight="bold">Your Task</Text>
 
-        <Box display="flex" gap={2}>
+        <Box display="flex" flexDirection={{base: "column", lg: "row"}} gap={2}>
           <FilterSelect 
             label='Select Category'
             placeholder='Category'
@@ -61,6 +66,16 @@ const ShowTask = () => {
             selectedValue={selectedStatus}
             onChange={setSelectedStatus}
           />
+          <Box display="flex" flexDirection="column">
+            <Text>Search</Text>
+            <Input
+              placeholder='Seach by task name'
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              width="320px"
+              size="sm"
+            />
+          </Box>
         </Box>
         {
           filteredTasks.length > 0 ? filteredTasks.map((item) => (
@@ -99,7 +114,23 @@ const ShowTask = () => {
                 </Box> 
             </Box>
           )) : (
-            <Text>No tasks available.</Text>
+            <EmptyState.Root>
+              <EmptyState.Content>
+                <EmptyState.Indicator>
+                  <Icon as={ClipboardList} color="black" boxSize={16}/>
+                </EmptyState.Indicator>
+                <VStack textAlign="center">
+                  <EmptyState.Title>There is no task</EmptyState.Title>
+                  <EmptyState.Description>
+                    You want to create task or go back to home? 
+                  </EmptyState.Description>
+                  <ButtonGroup mt={2}>
+                    <NavButton display="flex" variant="solid" herf='/' icon={Home} label='Home' />
+                    <NavButton display="flex" variant="solid" herf='/createtask' icon={Plus} label='Create Task' />
+                  </ButtonGroup>
+                </VStack>
+              </EmptyState.Content>
+            </EmptyState.Root>
           )
         }
       </Box>
