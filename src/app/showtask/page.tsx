@@ -2,6 +2,7 @@
 import Navbar from '@/components/Navbar'
 import FilterSelect from '@/components/reusable/FilterSelect'
 import NavButton from '@/components/reusable/NavbarButton'
+import { deleteTask } from '@/store/slice'
 import { ActionBar, Badge, Box, Button, ButtonGroup, Checkbox, CloseButton, Dialog, EmptyState, Icon, Input, Portal, Switch, Text, VStack } from '@chakra-ui/react'
 import { ClipboardList, Home, Plus } from 'lucide-react'
 import React, { useState } from 'react'
@@ -78,6 +79,10 @@ const ShowTask = () => {
       newChecked[taskId] = false
       return newChecked
     })
+  }
+
+  const handleDeleteTask = (id: string) => {
+    dispatch(deleteTask(id))
   }
 
   return (
@@ -190,13 +195,13 @@ const ShowTask = () => {
                                         <Dialog.Title>{title} Task</Dialog.Title>
                                       </Dialog.Header>
                                       <Dialog.Body>
-                                        <p>Are you delete you task?</p>
+                                        <p>Are you {title} you task?</p>
                                       </Dialog.Body>
                                       <Dialog.Footer>
                                         <Dialog.ActionTrigger asChild>
                                           <Button variant="outline">Cancel</Button>
                                         </Dialog.ActionTrigger>
-                                        <Button backgroundColor="red">{title}</Button>
+                                        <Button backgroundColor="red" onClick={() => title === 'Delete' && handleDeleteTask(item.id)}>{title}</Button>
                                       </Dialog.Footer>
                                       <Dialog.CloseTrigger asChild>
                                         <CloseButton size="sm" />
