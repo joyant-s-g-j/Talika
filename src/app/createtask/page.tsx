@@ -1,5 +1,6 @@
 'use client'
 import Navbar from '@/components/Navbar'
+import { toaster } from '@/components/ui/toaster'
 import { addTask } from '@/store/slice'
 import { Box, Button, Field, Fieldset, For, Input, NativeSelect, Stack, Text, Textarea } from '@chakra-ui/react'
 import React, { useState } from 'react'
@@ -26,6 +27,7 @@ const CreateTask = () => {
       category: '',
       status: "Pending",
     })
+    toaster.success({title: "Task created successfully"})
   }
   return (
     <Box>
