@@ -2,7 +2,7 @@
 import Navbar from '@/components/Navbar'
 import FilterSelect from '@/components/reusable/FilterSelect'
 import NavButton from '@/components/reusable/NavbarButton'
-import { ActionBar, Box, Button, ButtonGroup, Checkbox, CloseButton, createListCollection, EmptyState, Icon, Input, Portal, Select, Switch, Text, VStack } from '@chakra-ui/react'
+import { ActionBar, Box, Button, ButtonGroup, Checkbox, CloseButton, createListCollection, Dialog, EmptyState, Icon, Input, Portal, Select, Switch, Text, VStack } from '@chakra-ui/react'
 import { ClipboardList, Home, Plus } from 'lucide-react'
 import React, { useState } from 'react'
 import { LuPencilLine, LuTrash2 } from 'react-icons/lu'
@@ -34,6 +34,19 @@ const statusOptions = [
   { label: 'Pending', value: 'Pending' },
   { label: 'Completed', value: 'Completed' },
 ];
+
+const buttons = [
+  {
+    title: 'Delete',
+    icon: <LuTrash2 />,
+    color: 'red'
+  },
+  {
+    title: 'Edit',
+    icon: <LuPencilLine />,
+    color: 'orange'
+  }
+]
 
 const ShowTask = () => {
   const tasks = useSelector((state: State) => state.tasks.tasks);
@@ -145,14 +158,38 @@ const ShowTask = () => {
                       <Portal>
                         <ActionBar.Positioner>
                           <ActionBar.Content>
-                            <Button color="red" borderColor="red" variant="outline" size="sm">
-                              <LuTrash2 color='red' />
-                              Delete
-                            </Button>
-                            <Button color="orange.solid" borderColor="orange.solid" variant="outline" size="sm">
-                              <LuPencilLine color="orange.600" />
-                              Edit
-                            </Button>
+                            {buttons.map(({title, icon, color}) => (
+                              <Dialog.Root key={title} placement="center" motionPreset="slide-in-bottom">
+                              <Dialog.Trigger>     
+                                <Button color={color} borderColor={color} variant="outline" size="sm">
+                                  {icon}
+                                  {title}
+                                </Button>
+                              </Dialog.Trigger>
+                              <Portal>
+                                <Dialog.Backdrop />
+                                <Dialog.Positioner>
+                                  <Dialog.Content>
+                                    <Dialog.Header>
+                                      <Dialog.Title>{title} Task</Dialog.Title>
+                                    </Dialog.Header>
+                                    <Dialog.Body>
+                                      <p>Are you delete you task?</p>
+                                    </Dialog.Body>
+                                    <Dialog.Footer>
+                                      <Dialog.ActionTrigger asChild>
+                                        <Button variant="outline">Cancel</Button>
+                                      </Dialog.ActionTrigger>
+                                      <Button backgroundColor="red">{title}</Button>
+                                    </Dialog.Footer>
+                                    <Dialog.CloseTrigger asChild>
+                                      <CloseButton size="sm" />
+                                    </Dialog.CloseTrigger>
+                                  </Dialog.Content>
+                                </Dialog.Positioner>
+                              </Portal>
+                            </Dialog.Root>
+                            ))}       
                             <ActionBar.CloseTrigger asChild>
                               <CloseButton size="sm" />
                             </ActionBar.CloseTrigger>
