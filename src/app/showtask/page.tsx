@@ -2,9 +2,10 @@
 import Navbar from '@/components/Navbar'
 import FilterSelect from '@/components/reusable/FilterSelect'
 import NavButton from '@/components/reusable/NavbarButton'
-import { Box, ButtonGroup, Checkbox, createListCollection, EmptyState, Icon, Input, Portal, Select, Switch, Text, VStack } from '@chakra-ui/react'
+import { ActionBar, Box, Button, ButtonGroup, Checkbox, CloseButton, createListCollection, EmptyState, Icon, Input, Portal, Select, Switch, Text, VStack } from '@chakra-ui/react'
 import { ClipboardList, Home, Plus } from 'lucide-react'
 import React, { useState } from 'react'
+import { LuPencilLine, LuTrash2 } from 'react-icons/lu'
 import { useSelector } from 'react-redux'
 
 interface Task {
@@ -39,6 +40,7 @@ const ShowTask = () => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('');
   const [search, setSearch] = useState('')
+  const [checked, setChecked] = useState(false)
 
   const filteredTasks = tasks.filter((task) => 
     (selectedCategory === '' || task.category === selectedCategory) &&
@@ -99,11 +101,14 @@ const ShowTask = () => {
             </EmptyState.Root>
           ) : (
               filteredTasks.length > 0 ? filteredTasks.map((item) => (
-                <Box key={item.id} p={4} borderBottom="1px solid #ccc" display="flex" gap={3} w="50%">
-                    <Checkbox.Root>
+                <Box key={item.id} p={4} borderBottom="1px solid #ccc" display="flex" gap={3} w={{base: "full", lg: "50%"}}>
+                    <Checkbox.Root 
+                      checked={checked}
+                      onCheckedChange={(e) => setChecked(!!e.checked)}
+                    >
                       <Checkbox.HiddenInput />
                       <Checkbox.Control />
-                    </Checkbox.Root>
+                    </Checkbox.Root>        
                     <Box display="flex" justifyContent="space-between" flex="1">
                       <Box display="flex" flexDirection="column" alignItems="start">
                         <Text as="span" textTransform="capitalize" fontWeight="bold">{item.title}</Text>
@@ -131,7 +136,30 @@ const ShowTask = () => {
                           </Switch.Control>
                         </Switch.Root>
                       </Box>
-                    </Box> 
+                    </Box>
+                    <ActionBar.Root
+                      open={checked}
+                      onOpenChange={(e) => setChecked(e.open)}
+                      closeOnInteractOutside={false}
+                    >
+                      <Portal>
+                        <ActionBar.Positioner>
+                          <ActionBar.Content>
+                            <Button color="red" borderColor="red" variant="outline" size="sm">
+                              <LuTrash2 color='red' />
+                              Delete
+                            </Button>
+                            <Button color="orange.solid" borderColor="orange.solid" variant="outline" size="sm">
+                              <LuPencilLine color="orange.600" />
+                              Edit
+                            </Button>
+                            <ActionBar.CloseTrigger asChild>
+                              <CloseButton size="sm" />
+                            </ActionBar.CloseTrigger>
+                          </ActionBar.Content>
+                        </ActionBar.Positioner>
+                      </Portal>
+                    </ActionBar.Root>
                 </Box>
               )) : (
                 <EmptyState.Root>
