@@ -13,6 +13,7 @@ import EmptyStateComponent from '@/components/reusable/EmptyStateComponent'
 import { handleDeleteTask } from '@/utils/showtask/handleDeleteTask.js'
 import { handleEditTask } from '@/utils/showtask/handleEditTask.js'
 import { handleToggleStatus } from '@/utils/showtask/handleToggleStatus.js'
+import { handleDragEndDrop } from '@/utils/showtask/handleDragEndDrop.js'
 
 interface Task {
   id: string;
@@ -83,15 +84,8 @@ const ShowTask = () => {
     handleToggleStatus(dispatch, tasks, taskId)
   };
 
-  const handleDragEnd = (result: DropResult) => {
-    const { source, destination } = result
-    if(!destination) return
-    const newList = Array.from(taskList)
-    const [removed] = newList.splice(source.index, 1)
-    newList.splice(destination.index, 0, removed)
-
-    setTaskList(newList)
-    dispatch(reorderTasks(newList))
+  const handleDragEndDropWrapper = (result: DropResult) => {
+    handleDragEndDrop(dispatch, taskList, result)
   }
 
   if (!hasMounted) return null;
@@ -119,7 +113,7 @@ const ShowTask = () => {
             handleDeleteTask={handleDeleteTaskWrapper}
             handleEditTask={handleEditTaskWrapper}
             handleToggleStatus={handleToggleStatusWrapper}
-            handleDragEnd={handleDragEnd}
+            handleDragEnd={handleDragEndDropWrapper}
             handleCloseActionBar={handleCloseActionBar}
           />
         )}
