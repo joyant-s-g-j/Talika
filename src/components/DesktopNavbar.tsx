@@ -1,6 +1,5 @@
 'use client';
-import { Box, Button, Flex, Icon, Show, Text } from '@chakra-ui/react'
-import Link from 'next/link'
+import { Flex } from '@chakra-ui/react'
 import React from 'react'
 import { Home, ListTodo, Plus } from 'lucide-react';
 import NavButton from './reusable/NavbarButton';

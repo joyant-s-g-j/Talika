@@ -14,14 +14,7 @@ import { handleToggleStatus } from '@/utils/showtask/handleToggleStatus.js'
 import { handleDragEndDrop } from '@/utils/showtask/handleDragEndDrop.js'
 import { handleCheckboxChange } from '@/utils/showtask/handleCheckboxChange.js';
 import { handleCloseActionBar } from '@/utils/showtask/handleCloseActionBar.js';
-
-interface Task {
-  id: string;
-  title: string;
-  description: string;
-  category: string;
-  status: string;
-}
+import { Task } from '@/types/task'
 
 interface State {
   tasks: {
@@ -35,7 +28,6 @@ const ShowTask = () => {
   const [selectedStatus, setSelectedStatus] = useState('');
   const [search, setSearch] = useState('')
   const [checked, setChecked] = useState<Record<string, boolean>>({})
-  const [editedTask, setEditedTask] = useState<Partial<Task>>({});
   const dispatch = useDispatch();
   const [taskList, setTaskList] = useState(tasks);
 

@@ -1,6 +1,5 @@
 "use client"
-import { Box, Button, Text } from '@chakra-ui/react'
-import Link from 'next/link'
+import { Box, Text } from '@chakra-ui/react'
 import React from 'react'
 import NavButton from './reusable/NavbarButton'
 import { Plus } from 'lucide-react'

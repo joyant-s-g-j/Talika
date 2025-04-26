@@ -1,5 +1,5 @@
 "use client"
-import { Box, Button, CloseButton, Drawer, Icon, Portal, Text } from '@chakra-ui/react'
+import { Box, Button, CloseButton, Drawer, Icon, Portal } from '@chakra-ui/react'
 import { Home, ListTodo, Menu, Plus } from 'lucide-react'
 import React, { useState } from 'react'
 import NavButton from './reusable/NavbarButton'
