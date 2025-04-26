@@ -1,19 +1,17 @@
 'use client'
 import Navbar from '@/components/Navbar'
-import EditableTaskFields from '@/components/reusable/EditableTaskFields'
-import FilterSelect from '@/components/reusable/FilterSelect'
 import NavButton from '@/components/reusable/NavbarButton'
 import { toaster } from '@/components/ui/toaster'
 import { deleteTask, reorderTasks, updateTask } from '@/store/slice'
-import { ActionBar, Badge, Box, Button, ButtonGroup, Checkbox, CloseButton, Dialog, EmptyState, Icon, Input, Portal, Switch, Text, VStack } from '@chakra-ui/react'
+import { Box, ButtonGroup, EmptyState, Icon, Text, VStack } from '@chakra-ui/react'
 import { ClipboardList, Home, Plus } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
-import { LuPencilLine, LuTrash2 } from 'react-icons/lu'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux';
-import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
+import { DropResult } from "@hello-pangea/dnd";
 import FilterSection from '@/components/FilterSection'
 import TaskList from '@/components/TaskList'
+import EmptyStateComponent from '@/components/reusable/EmptyStateComponent'
 
 interface Task {
   id: string;
@@ -28,19 +26,6 @@ interface State {
     tasks: Task[];
   };
 }
-
-const buttons = [
-  {
-    title: 'Delete',
-    icon: <LuTrash2 />,
-    color: 'red'
-  },
-  {
-    title: 'Edit',
-    icon: <LuPencilLine />,
-    color: 'orange'
-  }
-]
 
 const ShowTask = () => {
   const tasks = useSelector((state: State) => state.tasks.tasks);
@@ -131,23 +116,7 @@ const ShowTask = () => {
           setSearch={setSearch}
         />
         {tasks.length === 0 ? (
-          <EmptyState.Root>
-            <EmptyState.Content>
-              <EmptyState.Indicator>
-                <Icon as={ClipboardList} color="black" boxSize={16} />
-              </EmptyState.Indicator>
-              <VStack textAlign="center">
-                <EmptyState.Title>There are no tasks</EmptyState.Title>
-                <EmptyState.Description>
-                  Want to create a task or go back to home?
-                </EmptyState.Description>
-                <ButtonGroup mt={2}>
-                  <NavButton display="flex" variant="solid" herf='/' icon={Home} label='Home' />
-                  <NavButton display="flex" variant="solid" herf='/createtask' icon={Plus} label='Create Task' />
-                </ButtonGroup>
-              </VStack>
-            </EmptyState.Content>
-          </EmptyState.Root>
+          <EmptyStateComponent />
         ) : (
           <TaskList
             tasks={tasks}

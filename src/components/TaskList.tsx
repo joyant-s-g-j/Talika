@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
-import { ActionBar, Badge, Box, Button, Checkbox, CloseButton, Dialog, EmptyState, Icon, Portal, Switch, Text, VStack } from '@chakra-ui/react';
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
+import { ActionBar, Badge, Box, Button, Checkbox, CloseButton, Dialog, Portal, Switch, Text } from '@chakra-ui/react';
 import EditableTaskFields from './reusable/EditableTaskFields';
 import { LuPencilLine, LuTrash2 } from 'react-icons/lu';
-import { ClipboardList } from 'lucide-react';
+import EmptyStateComponent from './reusable/EmptyStateComponent';
 
 interface Task {
     id: string;
@@ -183,16 +183,7 @@ const TaskList = ({tasks, filteredTasks, handleCheckboxChange, checked, handleDe
                     )}
                 </Draggable>
                 )) : (
-                <EmptyState.Root>
-                    <EmptyState.Content>
-                    <EmptyState.Indicator>
-                        <Icon as={ClipboardList} color="black" boxSize={16} />
-                    </EmptyState.Indicator>
-                    <VStack textAlign="center">
-                        <EmptyState.Title>There are no tasks</EmptyState.Title>
-                    </VStack>
-                    </EmptyState.Content>
-                </EmptyState.Root>
+                    <EmptyStateComponent />
                 )}
                 {provided.placeholder}
             </Box>
