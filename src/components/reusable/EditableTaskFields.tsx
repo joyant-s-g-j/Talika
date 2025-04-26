@@ -52,7 +52,15 @@ const EditableTaskFields: React.FC<EditableTaskFieldsProps> = ({title, descripti
                     {field.label}:
                 </Editable.Area>
                 <Editable.Preview />
-                <Editable.Input as={field.inputType} onBlur={handleSubmit} />
+                {field.label === 'category' ?(
+                    <Editable.Input as="select" onBlur={handleSubmit} defaultValue={field.value}>
+                        <option value="Work">Work</option>
+                        <option value="Personal">Personal</option>
+                        <option value="Others">Others</option>
+                    </Editable.Input>
+                ) : (
+                    <Editable.Input as={field.inputType} onBlur={handleSubmit} />
+                )}
                 <Editable.Control>
                     <Editable.EditTrigger asChild>
                     <IconButton variant="ghost" size="xs" aria-label={`Edit ${field.aria}`}>
