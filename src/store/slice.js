@@ -1,7 +1,7 @@
-const { createSlice, nanoid } = require("@reduxjs/toolkit")
+const { createSlice, nanoid, current } = require("@reduxjs/toolkit")
 
 const initialState = {
-    tasks: []
+    tasks: JSON.parse(localStorage.getItem("task")) || []
 }
 
 const Slice = createSlice({
@@ -18,10 +18,15 @@ const Slice = createSlice({
                 status
             }
             state.tasks.push(data)
+            let taskData = JSON.stringify(current(state.tasks))
+            localStorage.setItem("task", taskData)
         },
         deleteTask: (state, action) => {
-            const id = action.payload
-            state.tasks = state.tasks.filter(task => task.id !== id)
+            const data = state.tasks.filter((item) => {
+                return item.id !== action.payload
+            })
+            state.tasks = data
+            localStorage.setItem("task", JSON.stringify(state.tasks))
         },
         updateTask: (state, action) => {
             const {id, title, description, category, status} = action.payload
@@ -32,6 +37,7 @@ const Slice = createSlice({
                 task.category = category
                 task.status = status
             }
+            localStorage.setItem("task", JSON.stringify(current(state.tasks)))
         },
         toggleStatus: (state, action) => {
             const id = action.payload
@@ -39,6 +45,7 @@ const Slice = createSlice({
             if(task) {
                 task.status = task.status === 'Completed' ? 'Pending' : 'Completed'
             }
+            localStorage.setItem("task", JSON.stringify(current(state.tasks)));
         }
     }
 })
