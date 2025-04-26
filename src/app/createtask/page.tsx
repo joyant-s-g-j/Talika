@@ -2,35 +2,35 @@
 import Navbar from '@/components/Navbar'
 import { toaster } from '@/components/ui/toaster'
 import { addTask } from '@/store/slice'
-import { Box, Button, Field, Fieldset, For, Input, NativeSelect, Stack, Text, Textarea } from '@chakra-ui/react'
+import { Box, Button, Field, Fieldset, For, Input, NativeSelect, Stack, Textarea } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 
 const CreateTask = () => {
-  const [taskData, setTaskData] = useState({
+  const [taskData, setTaskData] = useState({ //tracking 4 field of task by using useState
     title: '',
     description: '',
     category: '',
-    status: "Pending",
+    status: "Pending", //by default task status is pending
   })
-  const dispatch = useDispatch()
-  const handleChange = (e: { target: { name: any; value: any } }) => {
+  const dispatch = useDispatch() //declare dispatch for send data on redux store
+  const handleChange = (e: { target: { name: any; value: any } }) => { // when user writing on the field then update the value and save the value on the state
     const { name, value } = e.target
     setTaskData(prev => ({...prev, [name]: value}))
   }
-  const dataDispatch = () => {
-  if(!taskData.title || !taskData.description || !taskData.category) {
-    toaster.error({title: "Please fill in all the required fields."})
-    return
-  }
-    dispatch(addTask(taskData))
-    setTaskData({
-      title: '',
-      description: '',
-      category: '',
-      status: "Pending",
-    })
-    toaster.success({title: "Task created successfully"})
+  const dataDispatch = () => { // its call when submit data
+    if(!taskData.title || !taskData.description || !taskData.category) { 
+      toaster.error({title: "Please fill in all the required fields."}) 
+      return
+    }
+      dispatch(addTask(taskData)) //if everything is ok then data will send to the redux store
+      setTaskData({ // form reseting(all field will again empty)
+        title: '',
+        description: '',
+        category: '',
+        status: "Pending",
+      })
+      toaster.success({title: "Task created successfully"})
   }
   return (
     <Box>
