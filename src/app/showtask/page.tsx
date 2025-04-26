@@ -14,6 +14,7 @@ import { handleDeleteTask } from '@/utils/showtask/handleDeleteTask.js'
 import { handleEditTask } from '@/utils/showtask/handleEditTask.js'
 import { handleToggleStatus } from '@/utils/showtask/handleToggleStatus.js'
 import { handleDragEndDrop } from '@/utils/showtask/handleDragEndDrop.js'
+import { handleCheckboxChange } from '@/utils/showtask/handleCheckboxChange.js';
 
 interface Task {
   id: string;
@@ -45,10 +46,6 @@ const ShowTask = () => {
     setTaskList(tasks)
   }, [tasks]);
 
-  useEffect(() => {
-    
-  }, [selectedCategory, selectedStatus, search, tasks])
-
   const filteredTasks = tasks.filter((task) => 
     (selectedCategory === '' || task.category === selectedCategory) &&
     (selectedStatus === '' || task.status === selectedStatus) &&
@@ -56,12 +53,8 @@ const ShowTask = () => {
       task.description.toLowerCase().includes(search.toLowerCase()))
   )
 
-  const handleCheckboxChange = (taskId: string) => {
-    setChecked(prev => {
-      const newChecked = {...prev};
-      newChecked[taskId] = !newChecked[taskId]
-      return newChecked
-    })
+  const handleCheckboxChangeWrapper = (taskId: string) => {
+    handleCheckboxChange(setChecked, taskId)
   }
 
   const handleCloseActionBar = (taskId: string) => {
@@ -108,7 +101,7 @@ const ShowTask = () => {
           <TaskList
             tasks={tasks}
             filteredTasks={filteredTasks}
-            handleCheckboxChange={handleCheckboxChange}
+            handleCheckboxChange={handleCheckboxChangeWrapper}
             checked={checked}
             handleDeleteTask={handleDeleteTaskWrapper}
             handleEditTask={handleEditTaskWrapper}
