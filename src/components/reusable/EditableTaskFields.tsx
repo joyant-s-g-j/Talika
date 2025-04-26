@@ -36,50 +36,50 @@ const EditableTaskFields: React.FC<EditableTaskFieldsProps> = ({title, descripti
         <VStack align="start">
             {fields.map((field) => {
                 const handleSubmit = (
-                e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>
-                ) => {
-                onChange?.({ [field.label]: e.target.value });
-            };
-        return (
-            <Editable.Root
-                key={field.label}
-                defaultValue={field.value}
-                onSubmit={(val) => onChange?.({ [field.label]: val })}
-                borderBottom="2px solid #ccc"
-                display="flex"
-            >
-                <Editable.Area textTransform="capitalize" fontWeight="bold">
-                    {field.label}:
-                </Editable.Area>
-                <Editable.Preview />
-                {field.label === 'category' ?(
-                    <Editable.Input as="select" onBlur={handleSubmit} defaultValue={field.value}>
-                        <option value="Work">Work</option>
-                        <option value="Personal">Personal</option>
-                        <option value="Others">Others</option>
-                    </Editable.Input>
-                ) : (
-                    <Editable.Input as={field.inputType} onBlur={handleSubmit} />
-                )}
-                <Editable.Control>
-                    <Editable.EditTrigger asChild>
-                    <IconButton variant="ghost" size="xs" aria-label={`Edit ${field.aria}`}>
-                        <LuPencilLine />
-                    </IconButton>
-                    </Editable.EditTrigger>
-                    <Editable.CancelTrigger asChild>
-                    <IconButton variant="outline" size="xs" aria-label={`Cancel edit ${field.aria}`}>
-                        <LuX />
-                    </IconButton>
-                    </Editable.CancelTrigger>
-                    <Editable.SubmitTrigger asChild>
-                    <IconButton variant="outline" size="xs" aria-label={`Submit ${field.aria}`}>
-                        <LuCheck />
-                    </IconButton>
-                    </Editable.SubmitTrigger>
-                </Editable.Control>
-            </Editable.Root>
-            )})}
+                        e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement> //store the latest data on the input field
+                    ) => { 
+                    onChange?.({ [field.label]: e.target.value });
+                };
+                return (
+                    <Editable.Root
+                        key={field.label}
+                        defaultValue={field.value}
+                        onSubmit={(val) => onChange?.({ [field.label]: val })}
+                        borderBottom="2px solid #ccc"
+                        display="flex"
+                    >
+                        <Editable.Area textTransform="capitalize" fontWeight="bold">
+                            {field.label}:
+                        </Editable.Area>
+                        <Editable.Preview />
+                        {field.label === 'category' ?(
+                            <Editable.Input as="select" onBlur={handleSubmit} defaultValue={field.value}>
+                                <option value="Work">Work</option>
+                                <option value="Personal">Personal</option>
+                                <option value="Others">Others</option>
+                            </Editable.Input>
+                        ) : (
+                            <Editable.Input as={field.inputType} onBlur={handleSubmit} />
+                        )}
+                        <Editable.Control>
+                            <Editable.EditTrigger asChild>
+                            <IconButton variant="ghost" size="xs" aria-label={`Edit ${field.aria}`}>
+                                <LuPencilLine />
+                            </IconButton>
+                            </Editable.EditTrigger>
+                            <Editable.CancelTrigger asChild>
+                                <IconButton variant="outline" size="xs" aria-label={`Cancel edit ${field.aria}`}>
+                                    <LuX />
+                                </IconButton>
+                            </Editable.CancelTrigger>
+                            <Editable.SubmitTrigger asChild>
+                                <IconButton variant="outline" size="xs" aria-label={`Submit ${field.aria}`}>
+                                    <LuCheck />
+                                </IconButton>
+                            </Editable.SubmitTrigger>
+                        </Editable.Control>
+                    </Editable.Root>
+                )})}
         </VStack>
     )
 }

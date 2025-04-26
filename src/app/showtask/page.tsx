@@ -44,23 +44,23 @@ const ShowTask = () => {
       task.description.toLowerCase().includes(search.toLowerCase()))
   )
 
-  const handleCheckboxChangeWrapper = (taskId: string) => {
+  const handleCheckboxChangeWrapper = (taskId: string) => { // checkbox handler, when it checked a delete and edit actionbar open. Here pass a specific id for specific task
     handleCheckboxChange(setChecked, taskId)
   }
 
-  const handleCloseActionBarWrapper = (taskId: string) => {
+  const handleCloseActionBarWrapper = (taskId: string) => { // actionbar close handler, use to close the action bar
     handleCloseActionBar(setChecked, taskId)
   }
 
-  const handleDeleteTaskWrapper = (id: string) => {
+  const handleDeleteTaskWrapper = (id: string) => { // for deleting task, here pass dispatch cause when user delete a task then the task data remove from the redux store
     handleDeleteTask(dispatch, id)
   }
 
-  const handleEditTaskWrapper = (editedTask: Task) => {
+  const handleEditTaskWrapper = (editedTask: Task) => { // editing task, using dispatch to update data on redux store also
     handleEditTask(dispatch, editedTask)
   };
 
-  const handleToggleStatusWrapper = (taskId: string) => {
+  const handleToggleStatusWrapper = (taskId: string) => { 
     handleToggleStatus(dispatch, tasks, taskId)
   };
 
@@ -68,13 +68,13 @@ const ShowTask = () => {
     handleDragEndDrop(dispatch, taskList, result)
   }
 
-  if (!hasMounted) return null;
+  if (!hasMounted) return null; // avoid hydration error
   return (
     <Box>
       <Navbar />
       <Box display="flex" minH="100vh" flexDirection="column" alignItems="center" mt={24} gap={4}>
         <Text fontSize="2xl" fontWeight="bold">Your Task</Text>
-        <FilterSection
+        <FilterSection // reusable component for filter search. 
           selectedCategory={selectedCategory} 
           setSelectedCategory={setSelectedCategory} 
           selectedStatus={selectedStatus} 
@@ -83,7 +83,7 @@ const ShowTask = () => {
           setSearch={setSearch}
         />
         {tasks.length === 0 ? (
-          <EmptyStateComponent />
+          <EmptyStateComponent /> // when no task on list then showing the empty state
         ) : (
           <TaskList
             tasks={tasks}
