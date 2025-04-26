@@ -11,6 +11,8 @@ import FilterSection from '@/components/FilterSection'
 import TaskList from '@/components/TaskList'
 import EmptyStateComponent from '@/components/reusable/EmptyStateComponent'
 import { handleDeleteTask } from '@/utils/showtask/handleDeleteTask.js'
+import { handleEditTask } from '@/utils/showtask/handleEditTask.js'
+import { handleToggleStatus } from '@/utils/showtask/handleToggleStatus.js'
 
 interface Task {
   id: string;
@@ -73,19 +75,12 @@ const ShowTask = () => {
     handleDeleteTask(dispatch, id)
   }
 
-  const handleEditTask = (editedTask: Task) => {
-    dispatch(updateTask(editedTask));
-    setEditedTask({});
-    toaster.success({ title: "Task updated successfully" });
+  const handleEditTaskWrapper = (editedTask: Task) => {
+    handleEditTask(dispatch, editedTask)
   };
 
-  const handleToggleStatus = (taskId: string) => {
-    const task = tasks.find(t => t.id === taskId)
-    if(task) {
-      const updatedStatus = task.status === "Completed" ? "Pending" : "Completed";
-      dispatch(updateTask({ ...task, status: updatedStatus }));
-      toaster.success({ title: "Task status updated" });
-    }
+  const handleToggleStatusWrapper = (taskId: string) => {
+    handleToggleStatus(dispatch, tasks, taskId)
   };
 
   const handleDragEnd = (result: DropResult) => {
@@ -122,8 +117,8 @@ const ShowTask = () => {
             handleCheckboxChange={handleCheckboxChange}
             checked={checked}
             handleDeleteTask={handleDeleteTaskWrapper}
-            handleEditTask={handleEditTask}
-            handleToggleStatus={handleToggleStatus}
+            handleEditTask={handleEditTaskWrapper}
+            handleToggleStatus={handleToggleStatusWrapper}
             handleDragEnd={handleDragEnd}
             handleCloseActionBar={handleCloseActionBar}
           />
