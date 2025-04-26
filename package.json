@@ -12,6 +12,7 @@
     "@chakra-ui/react": "^3.16.1",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@hello-pangea/dnd": "^18.0.1",
     "@reduxjs/toolkit": "^2.7.0",
     "framer-motion": "^12.8.0",
     "lucide-react": "^0.503.0",

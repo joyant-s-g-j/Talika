@@ -63,9 +63,15 @@ const Slice = createSlice({
             if (typeof window !== 'undefined') {
                 localStorage.setItem("task", JSON.stringify(current(state.tasks)));
             }
+        },
+        reorderTasks: (state, action) => {
+            state.tasks = action.payload
+            if(typeof window !== 'undefined') {
+                localStorage.setItem("task", JSON.stringify(state.tasks));
+            }
         }
     }
 })
 
-export const {addTask, deleteTask, updateTask, toggleStatus} = Slice.actions
+export const {addTask, deleteTask, updateTask, toggleStatus, reorderTasks} = Slice.actions
 export default Slice.reducer
