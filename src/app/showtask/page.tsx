@@ -7,7 +7,7 @@ import { toaster } from '@/components/ui/toaster'
 import { deleteTask, updateTask } from '@/store/slice'
 import { ActionBar, Badge, Box, Button, ButtonGroup, Checkbox, CloseButton, Dialog, EmptyState, Icon, Input, Portal, Switch, Text, VStack } from '@chakra-ui/react'
 import { ClipboardList, Home, Plus } from 'lucide-react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { LuPencilLine, LuTrash2 } from 'react-icons/lu'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux';
@@ -61,6 +61,11 @@ const ShowTask = () => {
   const [editedTask, setEditedTask] = useState<Partial<Task>>({});
   const dispatch = useDispatch();
 
+  const [hasMounted, setHasMounted] = useState(false);
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
   const filteredTasks = tasks.filter((task) => 
     (selectedCategory === '' || task.category === selectedCategory) &&
     (selectedStatus === '' || task.status === selectedStatus) &&
@@ -108,8 +113,8 @@ const ShowTask = () => {
     dispatch(updateTask({ ...task, status: updatedStatus }));
     toaster.success({ title: "Task status updated" });
   };
-  
 
+  if (!hasMounted) return null;
   return (
     <Box>
       <Navbar />

@@ -1,7 +1,15 @@
 const { createSlice, nanoid, current } = require("@reduxjs/toolkit")
 
+const getInitialTasks = () => {
+    if (typeof window !== 'undefined') {
+        const stored = localStorage.getItem("task")
+        return stored ? JSON.parse(stored) : []
+    }
+    return []
+}
+
 const initialState = {
-    tasks: JSON.parse(localStorage.getItem("task")) || []
+    tasks: getInitialTasks()
 }
 
 const Slice = createSlice({
@@ -19,14 +27,19 @@ const Slice = createSlice({
             }
             state.tasks.push(data)
             let taskData = JSON.stringify(current(state.tasks))
-            localStorage.setItem("task", taskData)
+            if (typeof window !== 'undefined') {
+                localStorage.setItem("task", taskData)
+            }
+            
         },
         deleteTask: (state, action) => {
             const data = state.tasks.filter((item) => {
                 return item.id !== action.payload
             })
             state.tasks = data
-            localStorage.setItem("task", JSON.stringify(state.tasks))
+            if (typeof window !== 'undefined') {
+                localStorage.setItem("task", JSON.stringify(state.tasks))
+            }
         },
         updateTask: (state, action) => {
             const {id, title, description, category, status} = action.payload
@@ -37,7 +50,9 @@ const Slice = createSlice({
                 task.category = category
                 task.status = status
             }
-            localStorage.setItem("task", JSON.stringify(current(state.tasks)))
+            if (typeof window !== 'undefined') {
+                localStorage.setItem("task", JSON.stringify(current(state.tasks)))
+            }
         },
         toggleStatus: (state, action) => {
             const id = action.payload
@@ -45,7 +60,9 @@ const Slice = createSlice({
             if(task) {
                 task.status = task.status === 'Completed' ? 'Pending' : 'Completed'
             }
-            localStorage.setItem("task", JSON.stringify(current(state.tasks)));
+            if (typeof window !== 'undefined') {
+                localStorage.setItem("task", JSON.stringify(current(state.tasks)));
+            }
         }
     }
 })
