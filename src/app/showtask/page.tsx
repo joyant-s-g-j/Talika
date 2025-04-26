@@ -12,6 +12,7 @@ import { LuPencilLine, LuTrash2 } from 'react-icons/lu'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux';
 import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
+import FilterSection from '@/components/FilterSection'
 
 interface Task {
   id: string;
@@ -68,6 +69,10 @@ const ShowTask = () => {
     setHasMounted(true);
     setTaskList(tasks)
   }, [tasks]);
+
+  useEffect(() => {
+    
+  }, [selectedCategory, selectedStatus, search, tasks])
 
   const filteredTasks = tasks.filter((task) => 
     (selectedCategory === '' || task.category === selectedCategory) &&
@@ -134,33 +139,14 @@ const ShowTask = () => {
       <Navbar />
       <Box display="flex" minH="100vh" flexDirection="column" alignItems="center" mt={24} gap={4}>
         <Text fontSize="2xl" fontWeight="bold">Your Task</Text>
-        <Box display="flex" flexDirection={{base: "column", lg: "row"}} gap={2}>
-          <FilterSelect 
-            label='Select Category'
-            placeholder='Category'
-            options={categoryOptions}
-            selectedValue={selectedCategory}
-            onChange={setSelectedCategory}
-          />
-          <FilterSelect 
-            label='Select Status'
-            placeholder='Status'
-            options={statusOptions}
-            selectedValue={selectedStatus}
-            onChange={setSelectedStatus}
-          />
-          <Box display="flex" flexDirection="column">
-            <Text>Search</Text>
-            <Input
-              placeholder='Search by task name'
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              width="320px"
-              size="sm"
-            />
-          </Box>
-        </Box>
-  
+        <FilterSection
+          selectedCategory={selectedCategory} 
+          setSelectedCategory={setSelectedCategory} 
+          selectedStatus={selectedStatus} 
+          setSelectedStatus={setSelectedStatus} 
+          search={search}
+          setSearch={setSearch}
+        />
         {tasks.length === 0 ? (
           <EmptyState.Root>
             <EmptyState.Content>
