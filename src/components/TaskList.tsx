@@ -164,7 +164,7 @@ const TaskList = ({tasks, filteredTasks, handleCheckboxChange, checked, handleDe
                                                 </Button>
                                                 </Dialog.Footer>
                                                 <Dialog.CloseTrigger asChild>
-                                                <CloseButton size="sm" />
+                                                    <CloseButton size="sm" />
                                                 </Dialog.CloseTrigger>
                                             </Dialog.Content>
                                         </Dialog.Positioner>

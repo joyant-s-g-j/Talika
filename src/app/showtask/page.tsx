@@ -1,10 +1,8 @@
 'use client'
 import Navbar from '@/components/Navbar'
-import NavButton from '@/components/reusable/NavbarButton'
 import { toaster } from '@/components/ui/toaster'
-import { deleteTask, reorderTasks, updateTask } from '@/store/slice'
-import { Box, ButtonGroup, EmptyState, Icon, Text, VStack } from '@chakra-ui/react'
-import { ClipboardList, Home, Plus } from 'lucide-react'
+import { reorderTasks, updateTask } from '@/store/slice'
+import { Box, Text } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux';
@@ -12,6 +10,7 @@ import { DropResult } from "@hello-pangea/dnd";
 import FilterSection from '@/components/FilterSection'
 import TaskList from '@/components/TaskList'
 import EmptyStateComponent from '@/components/reusable/EmptyStateComponent'
+import { handleDeleteTask } from '@/utils/showtask/handleDeleteTask.js'
 
 interface Task {
   id: string;
@@ -70,9 +69,8 @@ const ShowTask = () => {
     })
   }
 
-  const handleDeleteTask = (id: string) => {
-    dispatch(deleteTask(id))
-    toaster.success({title: "Task deleted successfully"})
+  const handleDeleteTaskWrapper = (id: string) => {
+    handleDeleteTask(dispatch, id)
   }
 
   const handleEditTask = (editedTask: Task) => {
@@ -123,7 +121,7 @@ const ShowTask = () => {
             filteredTasks={filteredTasks}
             handleCheckboxChange={handleCheckboxChange}
             checked={checked}
-            handleDeleteTask={handleDeleteTask}
+            handleDeleteTask={handleDeleteTaskWrapper}
             handleEditTask={handleEditTask}
             handleToggleStatus={handleToggleStatus}
             handleDragEnd={handleDragEnd}
