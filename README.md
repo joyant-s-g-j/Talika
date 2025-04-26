@@ -45,7 +45,6 @@ Follow the steps below to run the project locally on your machine.
     ```bash
     http://localhost:3000
 
-
 ## 🤝 Contributing  
 Pull requests and issue submissions are welcome to enhance Talika!
 
