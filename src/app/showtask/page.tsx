@@ -1,7 +1,5 @@
 'use client'
 import Navbar from '@/components/Navbar'
-import { toaster } from '@/components/ui/toaster'
-import { reorderTasks, updateTask } from '@/store/slice'
 import { Box, Text } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
@@ -15,6 +13,7 @@ import { handleEditTask } from '@/utils/showtask/handleEditTask.js'
 import { handleToggleStatus } from '@/utils/showtask/handleToggleStatus.js'
 import { handleDragEndDrop } from '@/utils/showtask/handleDragEndDrop.js'
 import { handleCheckboxChange } from '@/utils/showtask/handleCheckboxChange.js';
+import { handleCloseActionBar } from '@/utils/showtask/handleCloseActionBar.js';
 
 interface Task {
   id: string;
@@ -57,12 +56,8 @@ const ShowTask = () => {
     handleCheckboxChange(setChecked, taskId)
   }
 
-  const handleCloseActionBar = (taskId: string) => {
-    setChecked(prev => {
-      const newChecked = {...prev};
-      newChecked[taskId] = false
-      return newChecked
-    })
+  const handleCloseActionBarWrapper = (taskId: string) => {
+    handleCloseActionBar(setChecked, taskId)
   }
 
   const handleDeleteTaskWrapper = (id: string) => {
@@ -107,7 +102,7 @@ const ShowTask = () => {
             handleEditTask={handleEditTaskWrapper}
             handleToggleStatus={handleToggleStatusWrapper}
             handleDragEnd={handleDragEndDropWrapper}
-            handleCloseActionBar={handleCloseActionBar}
+            handleCloseActionBar={handleCloseActionBarWrapper}
           />
         )}
       </Box>
