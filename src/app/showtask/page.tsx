@@ -103,6 +103,13 @@ const ShowTask = () => {
     }
   }
 
+  const handleToggleStatus = (task: Task) => {
+    const updatedStatus = task.status === "Completed" ? "Pending" : "Completed";
+    dispatch(updateTask({ ...task, status: updatedStatus }));
+    toaster.success({ title: "Task status updated" });
+  };
+  
+
   return (
     <Box>
       <Navbar />
@@ -184,8 +191,11 @@ const ShowTask = () => {
                       >
                         {item.category}
                       </Text>
-                      <Badge color="orange.solid">{item.status}</Badge>
-                      <Switch.Root colorPalette="green">
+                      <Badge color={item.status === "Pending" ? "orange.solid" : "green.solid"}>{item.status}</Badge>
+                      <Switch.Root colorPalette="green" 
+                        checked={item.status === "Completed"}
+                        onCheckedChange={() => handleToggleStatus(item)}
+                      >
                         <Switch.HiddenInput />
                         <Switch.Control>
                           <Switch.Thumb />
