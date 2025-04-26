@@ -1,6 +1,6 @@
 # Talika ✅📝
 
-🚀 **Talika** is a powerful **task management web application** where users can **add tasks, edit tasks, delete tasks, view task details, and reorder tasks using drag-and-drop**. Built with **Next.js, React (TypeScript), Redux Toolkit, and Chakra UI**, Talika offers a clean, responsive, and highly interactive experience for managing your daily tasks efficiently.
+🚀 **Talika** is a **task management web application** where users can **add tasks, edit tasks, delete tasks, view task details, and reorder tasks using drag-and-drop**. Built with **Next.js, React (TypeScript), Redux Toolkit, and Chakra UI**, Talika offers a clean, responsive, and highly interactive experience for managing your daily tasks efficiently.
 
 ### 🔗 Live Demo  
 Check out the live version here: **[Talika Live](https://amartalika.vercel.app/)**  
