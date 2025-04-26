@@ -11,6 +11,7 @@ Check out the live version here: **[Talika Live](https://amartalika.vercel.app/)
 ❌ **Delete Task** – Remove tasks that are no longer needed.  
 🔍 **Task Details** – View detailed information about each task.  
 🎯 **Drag & Drop Reordering** – Organize tasks intuitively with a smooth drag-and-drop interface powered by **@hello-pangea/dnd**.  
+🛡️ **Action Bar on Task Selection** – After creating a task, when a user checks the box next to a task, an action bar appears with **Edit**, **Delete**, and **Details** for easier management.
 📱 **Fully Responsive** – Optimized for all devices, from mobile to desktop.
 
 ## 🛠️ Tech Stack  
