@@ -55,12 +55,13 @@ const CreateTask = () => {
             </Fieldset.Legend>
           </Stack>
           <Fieldset.Content>
-
+            {/* Task title input */}
             <Field.Root>
               <Field.Label fontWeight="bold">Task Title</Field.Label>
               <Input name='title' placeholder='Write your task title' value={taskData.title} onChange={handleChange} />
             </Field.Root>
             
+            {/* Task Description input */}
             <Field.Root>
               <Field.Label fontWeight="bold">Task Description</Field.Label>
               <Textarea 
@@ -73,6 +74,7 @@ const CreateTask = () => {
               />
             </Field.Root>
 
+            {/* Task category input */}
             <Field.Root>
               <Field.Label fontWeight="bold">Task Category</Field.Label>
               <NativeSelect.Root>
@@ -89,6 +91,7 @@ const CreateTask = () => {
             </Field.Root>
           </Fieldset.Content>
           
+          {/* Task submit button */}
           <Button type='submit' onClick={dataDispatch} alignSelf="flex-center">
             Submit
           </Button>
